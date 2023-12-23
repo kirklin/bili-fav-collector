@@ -3,7 +3,7 @@ import type { AxiosResponse } from "axios";
 import axios from "axios";
 
 // 单个内容信息类型
-interface ResourceInfo {
+export interface ResourceInfo {
   id: number;
   type: number;
   title: string;
@@ -32,7 +32,7 @@ interface ResourceInfo {
 }
 
 // API响应的根对象类型
-interface ResourceInfosResponse {
+export interface ResourceInfosResponse {
   code: number;
   message: string;
   ttl: number;

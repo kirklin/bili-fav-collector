@@ -3,7 +3,7 @@ import type { AxiosResponse } from "axios";
 import axios from "axios";
 
 // 单个收藏夹信息类型
-interface FolderListItem {
+export interface FolderListItem {
   id: number;
   fid: number;
   mid: number;
@@ -14,7 +14,7 @@ interface FolderListItem {
 }
 
 // API响应的根对象类型
-interface CreatedFolderResponse {
+export interface CreatedFolderResponse {
   code: number;
   message: string;
   ttl: number;

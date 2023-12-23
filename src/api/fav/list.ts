@@ -2,7 +2,7 @@ import type { AxiosResponse } from "axios";
 import axios from "axios";
 
 // 定义 API 响应的数据类型
-interface ContentDetail {
+export interface ContentDetail {
   id: number;
   type: number;
   title: string;
@@ -30,7 +30,7 @@ interface ContentDetail {
   season: null;
 }
 
-interface Info {
+export interface Info {
   id: number;
   fid: number;
   mid: number;
@@ -62,7 +62,7 @@ interface Info {
   media_count: number;
 }
 
-interface ResponseData {
+export interface ResponseData {
   code: number;
   message: string;
   data: {
@@ -94,7 +94,7 @@ export async function getFavoriteDetailList(mediaId: number, platform: string, p
 }
 
 // 定义接口用于收藏夹内容 ID
-interface MediaId {
+export interface MediaId {
   id: number;
   type: number;
   bv_id: string;

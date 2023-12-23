@@ -2,7 +2,7 @@
 import type { AxiosResponse } from "axios";
 import axios from "axios";
 
-interface UpperInfo {
+export interface UpperInfo {
   mid: number;
   name: string;
   face: string;
@@ -12,7 +12,7 @@ interface UpperInfo {
 }
 
 // 收藏夹信息中的 cnt_info 对象类型
-interface CountInfo {
+export interface CountInfo {
   collect: number;
   play: number;
   thumb_up: number;
@@ -20,7 +20,7 @@ interface CountInfo {
 }
 
 // 收藏夹数据对象类型
-interface FolderData {
+export interface FolderData {
   id: number;
   fid: number;
   mid: number;
@@ -41,7 +41,7 @@ interface FolderData {
 }
 
 // API响应的根对象类型
-interface FolderInfoResponse {
+export interface FolderInfoResponse {
   code: number;
   message: string;
   ttl: number;

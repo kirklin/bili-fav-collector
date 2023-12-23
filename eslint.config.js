@@ -8,6 +8,7 @@ export default kirklin(
   },
   {
     rules: {
+      "no-console": "off",
       // overrides
     },
   },

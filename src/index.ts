@@ -1,45 +1,57 @@
 import { getCreatedFolders } from "./api/fav/info/getCreatedFolders";
 import { getFavoriteDetailList } from "./api/fav/list";
 
-// 获取单个收藏夹的内容明细
-async function getFolderDetail(folderId: number, pageSize: number, cookie: string) {
-  try {
-    const detailListResponse = await getFavoriteDetailList(folderId, "web", 1, pageSize, cookie);
-    const detailList = detailListResponse.data;
-    // 在这里进行进一步处理或保存数据等操作
-    console.log(detailList.data.medias);
-    // 返回详细列表数据（可选）
-    return detailList;
-  } catch (error) {
-    console.error(`Error fetching folder ${folderId} details: ${error}`);
-    throw error;
+export class BiliBiliFavoriteClient {
+  private readonly upMid: number;
+  private readonly cookie: string;
+
+  constructor(upMid: number, cookie: string) {
+    this.upMid = upMid;
+    this.cookie = cookie;
   }
-}
 
-// 获取所有收藏夹的内容明细
-async function getAllFoldersContent(upMid: number, cookie: string) {
-  try {
-    console.log("Fetching all favorite folders' information...");
-    const createdFoldersResponse = await getCreatedFolders(upMid, cookie);
-
-    for (const folder of createdFoldersResponse?.data?.list || []) {
-      console.log(`Fetching content for folder ID: ${folder.id}`);
-
-      const pageSize = 20;
-      const totalPage = Math.ceil(folder.media_count / pageSize);
-
-      // 分页获取收藏夹内容明细列表
-      for (let page = 1; page <= totalPage; page++) {
-        await getFolderDetail(folder.id, pageSize, cookie);
-      }
+  public async getFolderDetail(folderId: number, pageSize: number) {
+    try {
+      const detailListResponse = await getFavoriteDetailList(folderId, "web", 1, pageSize, this.cookie);
+      const detailList = detailListResponse.data;
+      // Return media details (modify this based on actual response structure)
+      return detailList;
+    } catch (error) {
+      console.error(`Error fetching folder ${folderId} details: ${error}`);
+      throw error;
     }
-  } catch (error) {
-    console.error("Error occurred: ", error);
-    // 可以添加错误处理逻辑，比如记录错误或执行其他操作
+  }
+
+  public async getAllFoldersContent() {
+    try {
+      console.debug("Fetching all favorite folders' information...");
+      const createdFoldersResponse = await getCreatedFolders(this.upMid, this.cookie);
+
+      const allFolderDetails = [];
+
+      for (const folder of createdFoldersResponse?.data?.list || []) {
+        console.debug(`Fetching content for folder ID: ${folder.id}`);
+
+        const pageSize = 20;
+        const totalPage = Math.ceil(folder.media_count / pageSize);
+        const folderDetails = [];
+
+        // Fetch and accumulate details for each page of folder content
+        for (let page = 1; page <= totalPage; page++) {
+          const detail = await this.getFolderDetail(folder.id, pageSize);
+          if (detail?.data !== null) {
+            folderDetails.push(detail.data);
+          }
+        }
+
+        allFolderDetails.push(folderDetails);
+      }
+
+      return allFolderDetails;
+    } catch (error) {
+      console.error("Error occurred: ", error);
+      // Handle errors or add error logging here
+      throw error;
+    }
   }
 }
-
-// 调用函数示例
-const upMid = 32189285; // 替换为你的UP主ID
-const cookie = "YOUR_COOKIE"; // 替换为你的登录Cookie
-getAllFoldersContent(upMid, cookie).then();

@@ -1,7 +1,7 @@
 {
   "name": "bili-fav-collector",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "packageManager": "pnpm@8.11.0",
   "description": "Bili Bili UP主收藏夹工具",
   "author": "Kirk Lin <https://github.com/kirklin>",

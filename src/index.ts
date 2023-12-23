@@ -10,9 +10,9 @@ export class BiliBiliFavoriteClient {
     this.cookie = cookie;
   }
 
-  public async getFolderDetail(folderId: number, pageSize: number) {
+  public async getFolderDetail(folderId: number, page: number, pageSize: number) {
     try {
-      const detailListResponse = await getFavoriteDetailList(folderId, "web", 1, pageSize, this.cookie);
+      const detailListResponse = await getFavoriteDetailList(folderId, "web", page, pageSize, this.cookie);
       const detailList = detailListResponse.data;
       // Return media details (modify this based on actual response structure)
       return detailList;
@@ -28,17 +28,15 @@ export class BiliBiliFavoriteClient {
       const createdFoldersResponse = await getCreatedFolders(this.upMid, this.cookie);
 
       const allFolderDetails = [];
-
       for (const folder of createdFoldersResponse?.data?.list || []) {
         console.debug(`Fetching content for folder ID: ${folder.id}`);
-
         const pageSize = 20;
         const totalPage = Math.ceil(folder.media_count / pageSize);
         const folderDetails = [];
 
         // Fetch and accumulate details for each page of folder content
         for (let page = 1; page <= totalPage; page++) {
-          const detail = await this.getFolderDetail(folder.id, pageSize);
+          const detail = await this.getFolderDetail(folder.id, page, pageSize);
           if (detail?.data !== null) {
             folderDetails.push(detail.data);
           }
